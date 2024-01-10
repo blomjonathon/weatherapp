@@ -14,17 +14,22 @@
 </head>
 <body>
   <h1 class="title">Weather Dashboard</h1>
-  <form class="col-3 border-bottom border-2 border-gray pb-3">
+  <section class="row p-3">
+    <div class="searchForm col-3 pb-3">
       <h2 class="w-100">Search for a City:</h2>
       <div class="pb-3">
-        <input type="text" placeholder="" class="w-100">
+        <input type="text" placeholder="" id='searchBar' class="text-secondary w-100 p-1">
       </div>
-      <div>
-        <button type="submit" class="btn btn-primary w-100">Search</button>
+      <div class="border-bottom border-2 border-gray pb-3">
+        <div>
+          <button type="button" id="searchBtn" class= "btn btn-primary w-100">Search</button>
+        </div>
       </div>
-  </form>
+    </div>
+    <div id='cityBig' class="col-9"></div>
+  </section>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script type="text/javascript" src="./assets/js/script.js"></script>
 </body>
-</html>
+</html> 

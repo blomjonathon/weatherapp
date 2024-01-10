@@ -30,3 +30,10 @@ h5{
     height: 60px;
     color: white
 }
+.searchForm{
+    padding: 0px 10px 0px 10px;
+}
+#dayCard{
+    background: linear-gradient(to bottom, #2a256a, #544c79);
+    color: white;
+}
