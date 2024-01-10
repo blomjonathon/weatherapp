@@ -52,6 +52,7 @@ let cityBigContent = $(`<div class="p-3 border border-dark border-1px">
 // create a funciton to create and present empty div cards for the weather info to get put in later
 
 function createCityBigCard() {
+  let currentDay =  dayjs().format("M/D/YYYY")
   const search = $("#searchBtn");
   search.on("click", function () {
     const myKey = "bcb6773f3b002fedb6080301885d15d3";
@@ -71,7 +72,7 @@ function createCityBigCard() {
           const item = data[i];
           const latitude = item.lat;
           const longitude = item.lon;
-          updateCityTitle.text(item.name)
+          updateCityTitle.text(item.name + " " + currentDay)
           const secondUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${myKey}`
 
           $.ajax({
@@ -80,9 +81,15 @@ function createCityBigCard() {
               let temp = data2.list[0].main.temp
               let wind = data2.list[0].wind.speed
               let hum = data2.list[0].main.humidity
+              let icon = data2.list[0].weather[0].icon
+              console.log(icon)
+
               cityBig.children().eq(0).children().eq(1).text("Temp: " + temp + "°F")
               cityBig.children().eq(0).children().eq(2).text("Wind: " + wind + " MPH")
               cityBig.children().eq(0).children().eq(3).text("Humidity: " + hum + " %")
+
+              cityBig.children().eq(0).children().eq(3).text("Humidity: " + hum + " %")
+
             },
           });
         }
