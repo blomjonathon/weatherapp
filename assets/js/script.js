@@ -78,18 +78,30 @@ function createCityBigCard() {
           $.ajax({
             url: secondUrl,
             success: function (data2) {
+
+              // big card
               let temp = data2.list[0].main.temp
               let wind = data2.list[0].wind.speed
               let hum = data2.list[0].main.humidity
-              let icon = data2.list[0].weather[0].icon
-              console.log(icon)
+
+              // day 1 card
+              let wind1 = data2.list[1].wind.speed
+              let hum1 = data2.list[1].main.humidity
+              // let icon = data2.list[0].weather[0].icon
+              // var iconURL = "http://openweathermap.org/img/w/" + icon + ".png";
+
+              function fillCards(temp, wind, humidity){
+                let temp1 = data2.list[1].main.temp
+                cityBig.children().eq(1).children().eq(1).children().children().eq(2).text("Temp: " + temp1 + "°F")
+              }
+
+              fillCards(temp1)
 
               cityBig.children().eq(0).children().eq(1).text("Temp: " + temp + "°F")
               cityBig.children().eq(0).children().eq(2).text("Wind: " + wind + " MPH")
               cityBig.children().eq(0).children().eq(3).text("Humidity: " + hum + " %")
 
-              cityBig.children().eq(0).children().eq(3).text("Humidity: " + hum + " %")
-
+              // cityBig.children().eq(1).children().eq(1).children().children().eq(2).text("Temp: " + temp1 + "°F")
             },
           });
         }
@@ -99,3 +111,8 @@ function createCityBigCard() {
 }
 
 createCityBigCard();
+
+
+
+// TODO
+  // get icon pic
