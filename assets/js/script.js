@@ -5,55 +5,56 @@
 let cityBig = $("#cityBig");
 let cityBigContent = $(`<div class="p-3 border border-dark border-1px">
     <h2 id="cityTitle" class="w-100 p-1"></h2>
-    <p class=""></p>
-    <p class="">Wind: </p>
-    <p class="">Humidity: </p>
+    <p id ="bigTemp"class=""></p>
+    <p id ="bigWind"class=""></p>
+    <p id='bigHum'class=""></p>
   </div>
   <div class="pt-3">
     <h3 class="w-100">5 Day Forecast:</h3>
-    <div class="row justify-content-around">
+    <div id="dayCards" class="row justify-content-around">
       <div id='dayCard' class="col-2 border border-dark border-1px bg-darkblue">
-        <h4>Date</h4>
+        <h4></h4>
         <img></img>
-        <p>Temp: </p>
-        <p>Wind: </p>
-        <p>Humidity: </p>
+        <p></p>
+        <p></p>
+        <p></p>
+      </div>
+      <div id='dayCard' class="col-2 border border-dark border-1px">
+        <h4></h4>
+        <img></img>
+        <p></p>
+        <p></p>
+        <p></p>
       </div>
       <div id='dayCard' class="col-2 border border-dark border-1px">
         <h4>Date</h4>
         <img></img>
-        <p>Temp: </p>
-        <p>Wind: </p>
-        <p>Humidity: </p>
+        <p></p>
+        <p></p>
+        <p></p>
       </div>
       <div id='dayCard' class="col-2 border border-dark border-1px">
-        <h4>Date</h4>
+        <h4></h4>
         <img></img>
-        <p>Temp: </p>
-        <p>Wind: </p>
-        <p>Humidity: </p>
+        <p></p>
+        <p></p>
+        <p></p>
       </div>
       <div id='dayCard' class="col-2 border border-dark border-1px">
-        <h4>Date</h4>
+        <h4></h4>
         <img></img>
-        <p>Temp: </p>
-        <p>Wind: </p>
-        <p>Humidity: </p>
-      </div>
-      <div id='dayCard' class="col-2 border border-dark border-1px">
-        <h4>Date</h4>
-        <img></img>
-        <p>Temp: </p>
-        <p>Wind: </p>
-        <p>Humidity: </p>
+        <p></p>
+        <p></p>
+        <p></p>
       </div>
     </div>
   </div>`);
 // create a funciton to create and present empty div cards for the weather info to get put in later
 
 function createCityBigCard() {
-  let currentDay =  dayjs().format("M/D/YYYY")
+  let currentDay =  dayjs()
   const search = $("#searchBtn");
+
   search.on("click", function () {
     const myKey = "bcb6773f3b002fedb6080301885d15d3";
     let lat;
@@ -64,7 +65,11 @@ function createCityBigCard() {
 
     cityBig.append(cityBigContent);
     let updateCityTitle = $("#cityTitle")
+    let historyButton = $(`<button class='col-12'>${inputValue}</button>`)
+    $('#historyButton').append(historyButton)
 
+
+    function API(){
     $.ajax({
       url: apiUrl,
       success: function (data) {
@@ -72,8 +77,8 @@ function createCityBigCard() {
           const item = data[i];
           const latitude = item.lat;
           const longitude = item.lon;
-          updateCityTitle.text(item.name + " " + currentDay)
-          const secondUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${myKey}`
+          updateCityTitle.text(item.name + " " + currentDay.format("M/D/YYYY"))
+          const secondUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&units=imperial&appid=${myKey}`
 
           $.ajax({
             url: secondUrl,
@@ -84,29 +89,36 @@ function createCityBigCard() {
               let wind = data2.list[0].wind.speed
               let hum = data2.list[0].main.humidity
 
-              // day 1 card
-              let wind1 = data2.list[1].wind.speed
-              let hum1 = data2.list[1].main.humidity
+              // remove an index from array, remove 0 from data2.list
+              data2.list.shift()
+              for (let j = 0; j < 5; j++) {
+                let temp1 = data2.list[j*8].main.temp
+                let wind1 = data2.list[j*8].wind.speed
+                let hum1 = data2.list[j*8].main.humidity
+
+                $("#dayCards").children().eq(j).children().eq(0).text(currentDay.add(j + 1, 'day').format("M/D/YYYY"))
+                $("#dayCards").children().eq(j).children().eq(2).text("Temp: " + temp1 + "°F")
+                $("#dayCards").children().eq(j).children().eq(3).text("Wind: " + wind1 + "MPH")
+                $("#dayCards").children().eq(j).children().eq(4 ).text("Humidity: " + hum1 + " %")
+              }
+                $("#bigTemp").text(`Temp: ${temp} °F`)
+                $("#bigWind").text("Wind: " + wind + " MPH")
+                $("#bigHum").text("Humidity: " + hum + " %")
+
               // let icon = data2.list[0].weather[0].icon
               // var iconURL = "http://openweathermap.org/img/w/" + icon + ".png";
-
-              function fillCards(temp, wind, humidity){
-                let temp1 = data2.list[1].main.temp
-                cityBig.children().eq(1).children().eq(1).children().children().eq(2).text("Temp: " + temp1 + "°F")
-              }
-
-              fillCards(temp1)
-
-              cityBig.children().eq(0).children().eq(1).text("Temp: " + temp + "°F")
-              cityBig.children().eq(0).children().eq(2).text("Wind: " + wind + " MPH")
-              cityBig.children().eq(0).children().eq(3).text("Humidity: " + hum + " %")
-
-              // cityBig.children().eq(1).children().eq(1).children().children().eq(2).text("Temp: " + temp1 + "°F")
             },
           });
         }
       },
     });
+  }
+  API()
+    cityName.val('')
+    historyButton.on("click", function(){ 
+      historyButton.val(inputValue)
+      API()
+    })
   });
 }
 

@@ -37,3 +37,8 @@ h5{
     background: linear-gradient(to bottom, #2a256a, #544c79);
     color: white;
 }
+#historyButton{
+    width: 100%;
+    text-align: center;
+    background-color: green;
+}
