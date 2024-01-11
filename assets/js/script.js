@@ -4,7 +4,8 @@
 
 let cityBig = $("#cityBig");
 let cityBigContent = $(`<div class="p-3 border border-dark border-1px">
-    <h2 id="cityTitle" class="w-100 p-1"></h2>
+      <h2 id="cityTitle" class="row w-100 p-1"></h2>
+      <img id="cityImage">
     <p id ="bigTemp"class=""></p>
     <p id ="bigWind"class=""></p>
     <p id='bigHum'class=""></p>
@@ -89,14 +90,18 @@ function createCityBigCard() {
               let wind = data2.list[0].wind.speed
               let hum = data2.list[0].main.humidity
 
-              // remove an index from array, remove 0 from data2.list
               data2.list.shift()
               for (let j = 0; j < 5; j++) {
+                let icon = data2.list[j*8].weather[0].icon
                 let temp1 = data2.list[j*8].main.temp
                 let wind1 = data2.list[j*8].wind.speed
                 let hum1 = data2.list[j*8].main.humidity
+                let iconURL = "http://openweathermap.org/img/w/" + icon + ".png";
+
+                $("#cityImage").attr('src', iconURL)
 
                 $("#dayCards").children().eq(j).children().eq(0).text(currentDay.add(j + 1, 'day').format("M/D/YYYY"))
+                $("#dayCards").children().eq(j).children().eq(1).attr('src', iconURL)
                 $("#dayCards").children().eq(j).children().eq(2).text("Temp: " + temp1 + "°F")
                 $("#dayCards").children().eq(j).children().eq(3).text("Wind: " + wind1 + "MPH")
                 $("#dayCards").children().eq(j).children().eq(4 ).text("Humidity: " + hum1 + " %")
@@ -104,9 +109,6 @@ function createCityBigCard() {
                 $("#bigTemp").text(`Temp: ${temp} °F`)
                 $("#bigWind").text("Wind: " + wind + " MPH")
                 $("#bigHum").text("Humidity: " + hum + " %")
-
-              // let icon = data2.list[0].weather[0].icon
-              // var iconURL = "http://openweathermap.org/img/w/" + icon + ".png";
             },
           });
         }
@@ -123,8 +125,3 @@ function createCityBigCard() {
 }
 
 createCityBigCard();
-
-
-
-// TODO
-  // get icon pic
